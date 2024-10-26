@@ -28,7 +28,7 @@ func SaveNodeUpgradeJobRequestToMetaV2(nodeUpgradeJobReq commontypes.NodeUpgrade
 	if err != nil {
 		return errors.New("failed to marshal NodeUpgradeJobRequest")
 	}
-	meta := v2.MetaV2{
+	meta := &v2.MetaV2{
 		Key:   nodeUpgradeJobReq.UpgradeID,
 		Name:  NodeUpgradeJobRequestName,
 		Value: string(nodeUpgradeJobReqJSON),
@@ -61,8 +61,9 @@ func DeleteNodeUpgradeJobRequestFromMetaV2() error {
 // QueryNodeUpgradeJobRequestFromMetaV2 query NodeUpgradeJobRequest from meta_v2
 func QueryNodeUpgradeJobRequestFromMetaV2() (commontypes.NodeUpgradeJobRequest, error) {
 	var nodeUpgradeReq commontypes.NodeUpgradeJobRequest
-	meta := v2.MetaV2{}
-	err := dbm.DBAccess.QueryTable(v2.NewMetaTableName).Filter("name", NodeUpgradeJobRequestName).One(meta)
+	// meta := v2.MetaV2{}
+	var meta v2.MetaV2
+	err := dbm.DBAccess.QueryTable(v2.NewMetaTableName).Filter("name", NodeUpgradeJobRequestName).One(&meta)
 	if err != nil {
 		return nodeUpgradeReq, err
 	}
@@ -82,7 +83,7 @@ func SaveNodeTaskRequestToMetaV2(nodeTaskReq types.NodeTaskRequest) error {
 	if err != nil {
 		return errors.New("failed to marshal NodeTaskRequest")
 	}
-	meta := v2.MetaV2{
+	meta := &v2.MetaV2{
 		Key:   nodeTaskReq.TaskID,
 		Name:  NodeTaskRequestName,
 		Value: string(nodeTaskReqJSON),
@@ -115,8 +116,9 @@ func DeleteNodeTaskRequestFromMetaV2() error {
 // QueryNodeTaskRequestFromMetaV2 query NodeTaskRequest from meta_v2
 func QueryNodeTaskRequestFromMetaV2() (types.NodeTaskRequest, error) {
 	var nodeTaskReq types.NodeTaskRequest
-	meta := v2.MetaV2{}
-	err := dbm.DBAccess.QueryTable(v2.NewMetaTableName).Filter("name", NodeTaskRequestName).One(meta)
+	// meta := v2.MetaV2{}
+	var meta v2.MetaV2
+	err := dbm.DBAccess.QueryTable(v2.NewMetaTableName).Filter("name", NodeTaskRequestName).One(&meta)
 	if err != nil {
 		return nodeTaskReq, err
 	}
