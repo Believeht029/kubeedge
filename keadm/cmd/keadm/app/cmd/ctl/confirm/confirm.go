@@ -19,7 +19,6 @@ package confirm
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -41,10 +40,7 @@ func NewEdgeConfirm() *cobra.Command {
 		Use:   "confirm",
 		Short: edgeConfirmShortDescription,
 		Long:  edgeConfirmShortDescription,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) <= 0 {
-				return errors.New("no specified node name for confirm upgrade")
-			}
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			cmdutil.CheckErr(confirmNode())
 			return nil
 		},
@@ -74,7 +70,7 @@ func confirmNode() error {
 
 func nodeConfirm(ctx context.Context, clientSet *kubernetes.Clientset) (*types.NodeUpgradeConfirmResponse, error) {
 	result := clientSet.CoreV1().RESTClient().Post().
-		Resource("taskupgrade").
+		Resource("nodes").
 		SubResource("confirm-upgrade").
 		Do(ctx)
 
